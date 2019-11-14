@@ -33,7 +33,7 @@ public class MenuUI {
         btnAddProduct.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               UpdateProductUI ui = new UpdateProductUI();
+               AddProductView ui = new AddProductView();
                ui.run();
             }
         });

@@ -10,10 +10,10 @@ public class StoreManager extends JFrame{
     public static StoreManager getInstance() {
         if (instance == null) {
             String dbfile = DB_FILE;
-            JFileChooser fc = new JFileChooser();
+           /* JFileChooser fc = new JFileChooser();
             if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                 dbfile = fc.getSelectedFile().getAbsolutePath();
-            }
+            }*/
             instance = new StoreManager(DBMS_SQ_LITE, dbfile);
         }
         return instance;

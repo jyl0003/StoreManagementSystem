@@ -25,5 +25,5 @@ public class OracleDataAdapter implements IDataAdapter {
         return CUSTOMER_SAVED_OK;
     }
     public PurchaseModel loadPurchase(int id) {return null; }
-    public String savePurchase(PurchaseModel purchaseModel) {return null; }
+    public int savePurchase(PurchaseModel purchaseModel) {return 0; }
 }

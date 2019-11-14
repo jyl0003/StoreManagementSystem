@@ -2,7 +2,7 @@ public class PurchaseModel {
     public int mPurchaseId;
     public int mProductID;
     public int mCustomerID;
-    public double mQuantity;
+    public int mQuantity;
 
     public String toString() {
         StringBuilder purchaseSB = new StringBuilder("(");

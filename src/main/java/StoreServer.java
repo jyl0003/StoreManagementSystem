@@ -15,13 +15,13 @@ public class StoreServer {
     public static void main(String[] args) {
         // HashMap<Integer, String> loginUsers = new HashMap<>();
         int port = 1000;
-        if (args.length > 0) {
+      /*  if (args.length > 0) {
             System.out.println("Running arguments: ");
             for (String arg : args)
                 System.out.println(arg);
             port = Integer.parseInt(args[0]);
             DB_FILE = args[1];
-        }
+        }*/
         try {
             SQLiteDataAdapter sqLiteDataAdapter = new SQLiteDataAdapter();
             Gson gson = new Gson();
@@ -29,6 +29,9 @@ public class StoreServer {
             ServerSocket server = new ServerSocket(port);
 
             while (true) {
+                if (sqLiteDataAdapter.conn==null) {
+                    sqLiteDataAdapter.connect(DB_FILE);
+                }
                 Socket pipe = server.accept();
                 PrintWriter out = new PrintWriter(pipe.getOutputStream(), true);
                 Scanner in = new Scanner(pipe.getInputStream());
@@ -61,34 +64,6 @@ public class StoreServer {
                     out.println(gson.toJson(msg));
                 }
 
-                    //   String username = in.nextLine();
-                    // String password = in.nextLine();
-                  /*  String str = in.nextLine();
-                    System.out.println("GET product with id = " + str);
-                    int productID = Integer.parseInt(str);
-                    Connection conn = null;
-                    try {
-                        String url = "jdbc:sqlite:" + DB_FILE;
-                        conn = DriverManager.getConnection(url);
-
-                        String sql = "SELECT * FROM Product WHERE ProductID = " + productID;
-                        Statement stmt = conn.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql);
-
-                        if (rs.next()) {
-                            out.println(rs.getString("Name"));
-                            out.println(rs.getDouble("Price"));
-                            out.println(rs.getDouble("Quantity"));
-                        } else {
-                            out.println("null");
-                        }
-                        //conn.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-
-                    }
-                    conn.close();
-                }*/
                 if (msg.code == MessageModel.UPDATE_PRODUCT) {
                     ProductModel p = gson.fromJson(msg.data, ProductModel.class);
                     System.out.println("Update command with Product = " + p);
@@ -139,42 +114,64 @@ public class StoreServer {
                     }
                     out.println(gson.toJson(msg));
                 }
-            }
-                    /*
-                    String id = in.nextLine();  // read all information from client
-                    String name = in.nextLine();
-                    String price = in.nextLine();
-                    String quantity = in.nextLine();
-                    int id1 = Integer.parseInt(id);
-                    double price1 = Double.parseDouble(price);
-                    double quanitity1 = Double.parseDouble(quantity);
-                    System.out.println("PUT command with ProductID = " + id);
-
-                    try {
-                        String url = "jdbc:sqlite:" + DB_FILE;
-                        Connection conn = DriverManager.getConnection(url);
-
-                        String sql = "SELECT * FROM Product WHERE ProductID = " + id;
-                        Statement stmt = conn.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql);
-
-                        if (rs.next()) {
-                            rs.close();
-                            stmt.execute("DELETE FROM Product WHERE ProductID = " + id);
-                        }
-                        sql = "INSERT INTO Product VALUES (" + id + ",\"" + name + "\","
-                                + price + "," + quantity + ")";
-                        System.out.println("SQL for PUT: " + sql);
-                        stmt.execute(sql);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if (msg.code == MessageModel.LOAD_PURCHASE) {
+                    System.out.println("GET command with Purchase = " + msg.data);
+                    PurchaseModel purchase = sqLiteDataAdapter.loadPurchase(Integer.parseInt(msg.data));
+                    ProductModel productModel = sqLiteDataAdapter.loadProduct(purchase.mProductID);
+                    CustomerModel customerModel = sqLiteDataAdapter.loadCustomer(purchase.mCustomerID);
+                    //sqLiteDataAdapter.deleteCustomer(p);
+                    //int res = sqLiteDataAdapter.savePurchase(purchase);
+                    if (purchase == null) {
+                        msg.code = MessageModel.OPERATION_FAILED;
+                    } else {
+                        msg.code = MessageModel.OPERATION_OK;
+                        msg.data = gson.toJson(purchase);
+                        msg.productData = gson.toJson(productModel);
+                        msg.customerData = gson.toJson(customerModel);
                     }
+                    out.println(gson.toJson(msg));
                 }
-                //    }
-            }*/
+                if(msg.code == MessageModel.UPDATE_PURCHASE) {
+                    PurchaseModel purchaseModel = gson.fromJson(msg.data, PurchaseModel.class);
+                    System.out.println("Update command with Purchase = " + purchaseModel);
+                    ProductModel productModel = sqLiteDataAdapter.loadProduct(purchaseModel.mProductID);
+                    CustomerModel customerModel = sqLiteDataAdapter.loadCustomer(purchaseModel.mCustomerID);
+                    int res = sqLiteDataAdapter.updatePurchase(purchaseModel);
+                    sqLiteDataAdapter.loadCustomer(purchaseModel.mCustomerID);
+                    if (res == IDataAdapter.PURCHASE_SAVED_OK) {
+                        msg.code = MessageModel.OPERATION_OK;
+                        msg.productData = gson.toJson(productModel);
+                        msg.customerData = gson.toJson(customerModel);
+                    } else {
+                        msg.code = MessageModel.OPERATION_FAILED;
+                    }
+                    out.println(gson.toJson(msg));
+                }
+                if (msg.code == MessageModel.SAVE_PURCHASE) {
+                    PurchaseModel purchase = gson.fromJson(msg.data, PurchaseModel.class);
+                    System.out.println("PUT command with Purchase = " + purchase);
+                    ProductModel productModel = sqLiteDataAdapter.loadProduct(purchase.mProductID);
+                    CustomerModel customerModel = sqLiteDataAdapter.loadCustomer(purchase.mCustomerID);
+                    //sqLiteDataAdapter.deleteCustomer(p);
+                    int res = sqLiteDataAdapter.savePurchase(purchase);
+                    if (res == IDataAdapter.PURCHASE_SAVED_OK) {
+                        msg.code = MessageModel.OPERATION_OK;
+                        msg.productData = gson.toJson(productModel);
+                        msg.customerData = gson.toJson(customerModel);
+                    } else {
+                        msg.code = MessageModel.OPERATION_FAILED;
+                    }
+                    out.println(gson.toJson(msg));
+                }
+
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        /*finally {
+            sqLiteDataAdapter.disconnect();
+        }*/
         //}
 
 

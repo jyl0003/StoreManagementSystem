@@ -20,7 +20,7 @@ public interface IDataAdapter {
     public int saveCustomer(CustomerModel model);
     public String loadCustomerID_NAME(int id);
     public PurchaseModel loadPurchase(int id);
-    public String savePurchase(PurchaseModel model);
+    public int savePurchase(PurchaseModel model);
     //public int loadPurchase(int id);
     //public int savePurchase(PurchaseModel model);
 }
