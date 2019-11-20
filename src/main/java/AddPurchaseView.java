@@ -133,18 +133,17 @@ public class AddPurchaseView {
                 output.println(gson.toJson(msg));
 
                 msg = gson.fromJson(input.nextLine(), MessageModel.class);
-
                 if (msg.code == MessageModel.OPERATION_FAILED) {
-                    JOptionPane.showMessageDialog(null, "Product NOT exists!");
+                    JOptionPane.showMessageDialog(null, "Purchase DOES NOT exists!");
                 }
                 else {
                     purchase = gson.fromJson(msg.data, PurchaseModel.class);
                     customerModel = gson.fromJson(msg.customerData, CustomerModel.class);
                     productModel = gson.fromJson(msg.productData, ProductModel.class);
                    // StoreManager.getInstance().getDataAdapter().disconnect();
-                    if (productModel.mName == null || customerModel.mName == null) {
-                        JOptionPane.showMessageDialog(null, "Invalid CustomerID or ProductID");
-                    } else {
+                 //   if (productModel.mName == null || customerModel.mName == null) {
+                   //     JOptionPane.showMessageDialog(null, "Invalid CustomerID or ProductID");
+                  //  } else {
                         txtProductID.setText(Integer.toString(purchase.mProductID));
                         txtCustomerID.setText(Integer.toString(purchase.mCustomerID));
                         txtQuantity.setText(Integer.toString(purchase.mQuantity));
@@ -159,7 +158,7 @@ public class AddPurchaseView {
                         // double costNoTax = productModel.mPrice * purchase.mQuantity;
                         double totalCost = costNoTax + costNoTax * TAX_RATE;
                         labTotalCost.setText("Total Cost: " + df.format(totalCost));
-                   }
+                  // }
                     /*txtName.setText(customer.mName);
                     txtAddress.setText(customer.mAddress);
                     txtPhone.setText(customer.mPhone);
@@ -231,15 +230,15 @@ public class AddPurchaseView {
                 output.println(gson.toJson(msg));
 
                 msg = gson.fromJson(input.nextLine(), MessageModel.class);
-                purchase = gson.fromJson(msg.data, PurchaseModel.class);
+                //purchase = gson.fromJson(msg.data, PurchaseModel.class);
                 if (msg.code==MessageModel.OPERATION_OK) {
 
                    customerModel = gson.fromJson(msg.customerData, CustomerModel.class);
                     productModel = gson.fromJson(msg.productData, ProductModel.class);
-                    StoreManager.getInstance().getDataAdapter().disconnect();
-                    if (productModel.mName == null || customerModel.mName == null) {
-                        JOptionPane.showMessageDialog(null, "Invalid CustomerID or ProductID");
-                   } else {
+                   // StoreManager.getInstance().getDataAdapter().disconnect();
+                   // if (productModel.mName == null || customerModel.mName == null) {
+                        //JOptionPane.showMessageDialog(null, "Invalid CustomerID or ProductID");
+                   //} else {
                         DecimalFormat df = new DecimalFormat("$###,###,###.00");
                         labCustomerName.setText("Customer Name: " + customerModel.mName);
                         labProductName.setText("Product Name: " + productModel.mName);
@@ -251,7 +250,7 @@ public class AddPurchaseView {
                         // double costNoTax = productModel.mPrice * purchase.mQuantity;
                         double totalCost = costNoTax + costNoTax * TAX_RATE;
                         labTotalCost.setText("Total Cost: " + df.format(totalCost));
-                    }
+                   // }
                     JOptionPane.showMessageDialog(null, "Purchase Updated Successfully");
                 }
 

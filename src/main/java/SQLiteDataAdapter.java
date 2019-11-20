@@ -34,7 +34,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
     @Override
     public ProductModel loadProduct(int productID) {
         ProductModel product = new ProductModel();
-
+     //   product = null;
         try {
             String sql = "SELECT ProductID, Name, Price, Quantity FROM Product WHERE ProductID = " + productID;
             //Statement stmt = conn.createStatement();
@@ -47,8 +47,9 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            product = null;
         }
-        return product;
+       return product;
     }
 
     public int updateProduct(ProductModel product) {
@@ -115,7 +116,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
     public CustomerModel loadCustomer(int id) {
         CustomerModel customerModel = new CustomerModel();
-
+       // customerModel = null;
         try {
             String sql = "SELECT CustomerID, Name, Address, Phone, PaymentInfo FROM Customer WHERE CustomerID = " + id;
           //  Statement stmt = conn.createStatement();
@@ -129,6 +130,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            customerModel = null;
         }
         return customerModel;
     }
@@ -227,6 +229,7 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            purchaseModel = null;
         }
         return purchaseModel;
     }

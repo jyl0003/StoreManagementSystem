@@ -98,6 +98,9 @@ public class AddProductView {
                 }
                 else {
                     product = gson.fromJson(msg.data, ProductModel.class);
+                    if (product == null) {
+                        JOptionPane.showMessageDialog(null, "Product ID DOES NOT exists!");
+                    }
                     txtName.setText(product.mName);
                     txtPrice.setText(Double.toString(product.mPrice));
                     txtQuantity.setText(Double.toString(product.mQuantity));

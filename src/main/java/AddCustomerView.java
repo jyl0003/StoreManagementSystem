@@ -101,10 +101,13 @@ public class AddCustomerView {
                 msg = gson.fromJson(input.nextLine(), MessageModel.class);
 
                 if (msg.code == MessageModel.OPERATION_FAILED) {
-                    JOptionPane.showMessageDialog(null, "Product NOT exists!");
+                    JOptionPane.showMessageDialog(null, "Customer NOT exists!");
                 }
                 else {
                     customer = gson.fromJson(msg.data, CustomerModel.class);
+                    if (customer == null) {
+                        JOptionPane.showMessageDialog(null, "Customer ID DOES NOT exists!");
+                    }
                     txtName.setText(customer.mName);
                     txtAddress.setText(customer.mAddress);
                     txtPhone.setText(customer.mPhone);

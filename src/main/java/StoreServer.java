@@ -112,26 +112,19 @@ public class StoreServer {
                     } else {
                         msg.code = MessageModel.OPERATION_FAILED;
                     }
+                    System.out.println("Update command with Customer = " + msg.code);
                     out.println(gson.toJson(msg));
                 }
                 if (msg.code == MessageModel.LOAD_PURCHASE) {
                     System.out.println("GET command with Purchase = " + msg.data);
                     PurchaseModel purchase = sqLiteDataAdapter.loadPurchase(Integer.parseInt(msg.data));
-                 //   ProductModel productModel = new ProductModel();
-                  //  CustomerModel customerModel = new CustomerModel();
-                  //  if (purchase != null) {
-                  //       productModel = sqLiteDataAdapter.loadProduct(purchase.mProductID);
-                  //      customerModel = sqLiteDataAdapter.loadCustomer(purchase.mCustomerID);
-                  //  }
-                    //sqLiteDataAdapter.deleteCustomer(p);
-                    //int res = sqLiteDataAdapter.savePurchase(purchase);
                     if (purchase == null) {
                         msg.code = MessageModel.OPERATION_FAILED;
                     } else {
                         msg.code = MessageModel.OPERATION_OK;
                         msg.data = gson.toJson(purchase);
                         msg.productData = gson.toJson(sqLiteDataAdapter.loadProduct(purchase.mProductID));
-                        msg.customerData = gson.toJson(sqLiteDataAdapter.loadCustomer(purchase.mProductID));
+                        msg.customerData = gson.toJson(sqLiteDataAdapter.loadCustomer(purchase.mCustomerID));
                     }
                     out.println(gson.toJson(msg));
                 }
