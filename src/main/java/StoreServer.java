@@ -117,8 +117,12 @@ public class StoreServer {
                 if (msg.code == MessageModel.LOAD_PURCHASE) {
                     System.out.println("GET command with Purchase = " + msg.data);
                     PurchaseModel purchase = sqLiteDataAdapter.loadPurchase(Integer.parseInt(msg.data));
-                    ProductModel productModel = sqLiteDataAdapter.loadProduct(purchase.mProductID);
-                    CustomerModel customerModel = sqLiteDataAdapter.loadCustomer(purchase.mCustomerID);
+                 //   ProductModel productModel = new ProductModel();
+                  //  CustomerModel customerModel = new CustomerModel();
+                  //  if (purchase != null) {
+                  //       productModel = sqLiteDataAdapter.loadProduct(purchase.mProductID);
+                  //      customerModel = sqLiteDataAdapter.loadCustomer(purchase.mCustomerID);
+                  //  }
                     //sqLiteDataAdapter.deleteCustomer(p);
                     //int res = sqLiteDataAdapter.savePurchase(purchase);
                     if (purchase == null) {
@@ -126,22 +130,22 @@ public class StoreServer {
                     } else {
                         msg.code = MessageModel.OPERATION_OK;
                         msg.data = gson.toJson(purchase);
-                        msg.productData = gson.toJson(productModel);
-                        msg.customerData = gson.toJson(customerModel);
+                        msg.productData = gson.toJson(sqLiteDataAdapter.loadProduct(purchase.mProductID));
+                        msg.customerData = gson.toJson(sqLiteDataAdapter.loadCustomer(purchase.mProductID));
                     }
                     out.println(gson.toJson(msg));
                 }
                 if(msg.code == MessageModel.UPDATE_PURCHASE) {
                     PurchaseModel purchaseModel = gson.fromJson(msg.data, PurchaseModel.class);
                     System.out.println("Update command with Purchase = " + purchaseModel);
-                    ProductModel productModel = sqLiteDataAdapter.loadProduct(purchaseModel.mProductID);
-                    CustomerModel customerModel = sqLiteDataAdapter.loadCustomer(purchaseModel.mCustomerID);
+                    //ProductModel productModel = sqLiteDataAdapter.loadProduct(purchaseModel.mProductID);
+                    //CustomerModel customerModel = sqLiteDataAdapter.loadCustomer(purchaseModel.mCustomerID);
                     int res = sqLiteDataAdapter.updatePurchase(purchaseModel);
-                    sqLiteDataAdapter.loadCustomer(purchaseModel.mCustomerID);
+                    //sqLiteDataAdapter.loadCustomer(purchaseModel.mCustomerID);
                     if (res == IDataAdapter.PURCHASE_SAVED_OK) {
                         msg.code = MessageModel.OPERATION_OK;
-                        msg.productData = gson.toJson(productModel);
-                        msg.customerData = gson.toJson(customerModel);
+                        msg.productData = gson.toJson(sqLiteDataAdapter.loadProduct(purchaseModel.mProductID));
+                        msg.customerData = gson.toJson(sqLiteDataAdapter.loadCustomer(purchaseModel.mCustomerID));
                     } else {
                         msg.code = MessageModel.OPERATION_FAILED;
                     }

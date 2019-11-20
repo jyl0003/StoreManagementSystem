@@ -214,6 +214,10 @@ public class AddCustomerView {
                 output.println(gson.toJson(msg));
 
                 msg = gson.fromJson(input.nextLine(), MessageModel.class);
+
+                if (msg.code == MessageModel.OPERATION_OK) {
+                    JOptionPane.showMessageDialog(null, "Update Customer Success!");
+                }
                 /*
                 output.println("PUT");
                 output.println(product.mProductID);
@@ -286,6 +290,10 @@ public class AddCustomerView {
                 output.println(gson.toJson(msg));
 
                 msg = gson.fromJson(input.nextLine(), MessageModel.class);
+
+                if (msg.code == MessageModel.OPERATION_OK) {
+                    JOptionPane.showMessageDialog(null, "New Customer Added Success!");
+                }
                 /*
                 output.println("PUT");
                 output.println(product.mProductID);

@@ -141,7 +141,7 @@ public class AddPurchaseView {
                     purchase = gson.fromJson(msg.data, PurchaseModel.class);
                     customerModel = gson.fromJson(msg.customerData, CustomerModel.class);
                     productModel = gson.fromJson(msg.productData, ProductModel.class);
-                    StoreManager.getInstance().getDataAdapter().disconnect();
+                   // StoreManager.getInstance().getDataAdapter().disconnect();
                     if (productModel.mName == null || customerModel.mName == null) {
                         JOptionPane.showMessageDialog(null, "Invalid CustomerID or ProductID");
                     } else {
@@ -231,14 +231,15 @@ public class AddPurchaseView {
                 output.println(gson.toJson(msg));
 
                 msg = gson.fromJson(input.nextLine(), MessageModel.class);
-                //purchase = gson.fromJson(msg.data, PurchaseModel.class);
+                purchase = gson.fromJson(msg.data, PurchaseModel.class);
                 if (msg.code==MessageModel.OPERATION_OK) {
-                    customerModel = gson.fromJson(msg.customerData, CustomerModel.class);
+
+                   customerModel = gson.fromJson(msg.customerData, CustomerModel.class);
                     productModel = gson.fromJson(msg.productData, ProductModel.class);
-                   // StoreManager.getInstance().getDataAdapter().disconnect();
+                    StoreManager.getInstance().getDataAdapter().disconnect();
                     if (productModel.mName == null || customerModel.mName == null) {
                         JOptionPane.showMessageDialog(null, "Invalid CustomerID or ProductID");
-                    } else {
+                   } else {
                         DecimalFormat df = new DecimalFormat("$###,###,###.00");
                         labCustomerName.setText("Customer Name: " + customerModel.mName);
                         labProductName.setText("Product Name: " + productModel.mName);
@@ -251,6 +252,7 @@ public class AddPurchaseView {
                         double totalCost = costNoTax + costNoTax * TAX_RATE;
                         labTotalCost.setText("Total Cost: " + df.format(totalCost));
                     }
+                    JOptionPane.showMessageDialog(null, "Purchase Updated Successfully");
                 }
 
                 /*

@@ -189,6 +189,9 @@ public class AddProductView {
                 output.println(product.mName);
                 output.println(product.mPrice);
                 output.println(product.mQuantity);*/
+                if (msg.code == MessageModel.OPERATION_OK) {
+                    JOptionPane.showMessageDialog(null, "Update Product Success!");
+                }
 
             }
             catch (Exception e) {
@@ -259,6 +262,9 @@ public class AddProductView {
                 output.println(product.mName);
                 output.println(product.mPrice);
                 output.println(product.mQuantity);*/
+                if (msg.code == MessageModel.OPERATION_OK) {
+                    JOptionPane.showMessageDialog(null, "New Product Added Success!");
+                }
 
             }
             catch (Exception e) {

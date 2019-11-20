@@ -37,13 +37,13 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
         try {
             String sql = "SELECT ProductID, Name, Price, Quantity FROM Product WHERE ProductID = " + productID;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            //Statement stmt = conn.createStatement();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
             product.mProductID = rs.getInt("ProductId");
             product.mName = rs.getString("Name");
             product.mPrice = rs.getDouble("Price");
-            product.mQuantity = rs.getDouble("Quantity");
-
+            product.mQuantity = rs.getInt("Quantity");
+         //   rs.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -118,14 +118,14 @@ public class SQLiteDataAdapter implements IDataAdapter {
 
         try {
             String sql = "SELECT CustomerID, Name, Address, Phone, PaymentInfo FROM Customer WHERE CustomerID = " + id;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+          //  Statement stmt = conn.createStatement();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
             customerModel.mCustomerID = rs.getInt("CustomerID");
             customerModel.mName = rs.getString("Name");
             customerModel.mAddress = rs.getString("Address");
             customerModel.mPhone = rs.getString("Phone");
             customerModel.mPaymentInfo = rs.getString("PaymentInfo");
-
+         ///   rs.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -138,8 +138,8 @@ public class SQLiteDataAdapter implements IDataAdapter {
         String name = "";
         try {
             String sql = "SELECT Name FROM Customer WHERE CustomerID = " + id;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+           // Statement stmt = conn.createStatement();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
             name = rs.getString("Name");
 
         } catch (Exception e) {
@@ -216,14 +216,14 @@ public class SQLiteDataAdapter implements IDataAdapter {
     public PurchaseModel loadPurchase(int id) {
         PurchaseModel purchaseModel = new PurchaseModel();
         try {
-            String sql = "SELECT PurchaseID, ProductID, CustomerID, Quantity  FROM Purchase WHERE PurchaseID = " + id;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            String sql = "SELECT *  FROM Purchase WHERE PurchaseID = " + id;
+          //  Statement stmt = conn.createStatement();
+            ResultSet rs = conn.createStatement().executeQuery(sql);
             purchaseModel.mPurchaseId = rs.getInt("PurchaseID");
             purchaseModel.mProductID = rs.getInt("ProductID");
             purchaseModel.mCustomerID = rs.getInt("CustomerID");
             purchaseModel.mQuantity = rs.getInt("Quantity");
-
+           // rs.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
